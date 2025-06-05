@@ -8,23 +8,28 @@ const ProductCard = ({ product }) => {
     addToCart,
     //updateCartItem,
     removeFromCart,
-    // navigate, // remove if not used
+    navigate, // remove if not used
   } = useAppContext();
 
   if (!product) return null;
 
   return (
-    <div className="border border-gray-500/20 rounded-md md:px-4 px-3 py-2 bg-white md:min-w-56 md:max-w-56 w-full">
+    <div
+      onClick={() => {
+        navigate(`/products/${product.category.toLowerCase()}/${product._id}`);
+        scrollTo(0, 0)
+      }}
+      className="border border-gray-500/20 rounded-md md:px-4 px-3 py-2 bg-white md:min-w-56 md:max-w-56 w-full">
       <div className="group cursor-pointer flex items-center justify-center px-2">
         <img
           className="group-hover:scale-105 transition max-w-26 md:max-w-36"
-          src={product.image?.[0] || assets.placeholder_image}
+          src={product.image?.[0] || assets.placeholder_image} 
           alt={product.name}
         />
       </div>
       <div className="text-gray-500/60 text-sm">
         <p>{product.category}</p>
-        <p className="text-gray-700 font-medium text-lg truncate w-full">
+        <p className="text-gray-700 font-medium text-lg truncate w-full whitespace-pre-wrap">
           {product.name}
         </p>
         <div className="flex items-center gap-0.5">
