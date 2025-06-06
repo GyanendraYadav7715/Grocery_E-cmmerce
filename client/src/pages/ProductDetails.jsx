@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { useAppContext } from "../context/AppContext";
 import { useParams, Link } from "react-router-dom";
+import { assets } from "../assets/assets";
+import ProductCard from "../components/ProductCard";
 
 const ProductDetails = () => {
   const { id } = useParams();
-  const { products, currency, addToCart } = useAppContext();
+  const { products, currency, addToCart, navigate } = useAppContext();
 
   const product = products.find((item) => item._id === id);
   const [relatedProducts, setRelatedProducts] = useState([]);
@@ -66,39 +68,16 @@ const ProductDetails = () => {
             <div className="flex items-center gap-0.5 mt-1">
               {Array(5)
                 .fill("")
-                .map((_, i) =>
-                  product.rating > i ? (
-                    <svg
-                      key={i}
-                      width="14"
-                      height="13"
-                      viewBox="0 0 18 17"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M8.049.927c.3-.921 1.603-.921 1.902 0l1.294 3.983a1 1 0 0 0 .951.69h4.188c.969 0 1.371 1.24.588 1.81l-3.388 2.46a1 1 0 0 0-.364 1.118l1.295 3.983c.299.921-.756 1.688-1.54 1.118L9.589 13.63a1 1 0 0 0-1.176 0l-3.389 2.46c-.783.57-1.838-.197-1.539-1.118L4.78 10.99a1 1 0 0 0-.363-1.118L1.028 7.41c-.783-.57-.38-1.81.588-1.81h4.188a1 1 0 0 0 .95-.69z"
-                        fill="#615fff"
-                      />
-                    </svg>
-                  ) : (
-                    <svg
-                      key={i}
-                      width="14"
-                      height="13"
-                      viewBox="0 0 18 17"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M8.049.927c.3-.921 1.603-.921 1.902 0l1.294 3.983a1 1 0 0 0 .951.69h4.188c.969 0 1.371 1.24.588 1.81l-3.388 2.46a1 1 0 0 0-.364 1.118l1.295 3.983c.299.921-.756 1.688-1.54 1.118L9.589 13.63a1 1 0 0 0-1.176 0l-3.389 2.46c-.783.57-1.838-.197-1.539-1.118L4.78 10.99a1 1 0 0 0-.363-1.118L1.028 7.41c-.783-.57-.38-1.81.588-1.81h4.188a1 1 0 0 0 .95-.69z"
-                        fill="#615fff"
-                        fillOpacity="0.35"
-                      />
-                    </svg>
-                  )
-                )}
-              <p className="text-base ml-2">({product.rating})</p>
+                .map((_, i) => (
+                  <img
+                    key={i}
+                    src={i < 4 ? assets.star_icon : assets.star_dull_icon}
+                    alt={`star-${i}`}
+                    className="w-4 h-4"
+                  />
+                ))}
+
+              <p className="text-base ml-2">({4})</p>
             </div>
 
             {/* Pricing */}
@@ -128,11 +107,36 @@ const ProductDetails = () => {
               >
                 Add to Cart
               </button>
-              <button className="w-full py-3.5 cursor-pointer font-medium bg-primary text-white hover:bg-primary-dull transition">
+              <button
+                className="w-full py-3.5 cursor-pointer font-medium bg-primary text-white hover:bg-primary-dull transition"
+                onClick={() => {
+                  addToCart(product._id);
+                  navigate("/cart");
+                }}
+              >
                 Buy now
               </button>
             </div>
           </div>
+        </div>
+        {/* Realted products */}
+        <div className="mt-20 flex flex-col items-center">
+          <div className=" flex flex-col items-center w-max">
+            <p className="text-2xl md:text-3xl font-medium">Related Products</p>
+            <div className="w-16 h-0.5 bg-primary rounded-full"></div>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4   lg:grid-cols-4 mt-6 gap-4  w-full">
+            {relatedProducts
+              .filter((product) => product.inStock)
+              .map((product, index) => (
+                <ProductCard key={index} product={product} />
+              ))}
+          </div>
+          <button
+            onClick={() => {
+              navigate("/products");
+            }}
+            className="mx-auto cursor-pointer px-12 my-16 py-2.5 border rounded text-primary hover:bg-primary/10 transition">See more</button>
         </div>
       </div>
     )
