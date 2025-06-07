@@ -1,7 +1,18 @@
+import { useAddProductForm } from "../../hooks/useAddProductForm";
+import{assets} from "../../assets/assets"
+
 const AddProduct = () => {
+  const {
+    formData,
+    images, 
+    handleInputChange,
+    handleImageChange,
+    handleSubmit,
+  } = useAddProductForm();
+
   return (
     <div className="py-10 flex flex-col justify-between bg-white">
-      <form className="md:p-10 p-4 space-y-5 max-w-lg">
+      <form className="md:p-10 p-4 space-y-5 max-w-lg" onSubmit={handleSubmit}>
         <div>
           <p className="text-base font-medium">Product Image</p>
           <div className="flex flex-wrap items-center gap-3 mt-2">
@@ -14,91 +25,105 @@ const AddProduct = () => {
                     type="file"
                     id={`image${index}`}
                     hidden
+                    onChange={(e) => handleImageChange(e, index)}
                   />
                   <img
-                    className="max-w-24 cursor-pointer"
-                    src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/e-commerce/uploadArea.png"
-                    alt="uploadArea"
-                    width={100}
-                    height={100}
+                    className="max-w-24 cursor-pointer border rounded"
+                    src={
+                      images[index]
+                        ? URL.createObjectURL(images[index])
+                        :assets.upload_area
+                    }
+                    alt={`upload-${index}`}
                   />
                 </label>
               ))}
           </div>
         </div>
+
         <div className="flex flex-col gap-1 max-w-md">
-          <label className="text-base font-medium" htmlFor="product-name">
+          <label className="text-base font-medium" htmlFor="name">
             Product Name
           </label>
           <input
-            id="product-name"
+            id="name"
             type="text"
+            value={formData.name}
+            onChange={handleInputChange}
             placeholder="Type here"
             className="outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500/40"
             required
           />
         </div>
+
         <div className="flex flex-col gap-1 max-w-md">
-          <label
-            className="text-base font-medium"
-            htmlFor="product-description"
-          >
+          <label className="text-base font-medium" htmlFor="description">
             Product Description
           </label>
           <textarea
-            id="product-description"
+            id="description"
+            value={formData.description}
+            onChange={handleInputChange}
             rows={4}
             className="outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500/40 resize-none"
             placeholder="Type here"
           ></textarea>
         </div>
+
         <div className="w-full flex flex-col gap-1">
           <label className="text-base font-medium" htmlFor="category">
             Category
           </label>
           <select
             id="category"
+            value={formData.category}
+            onChange={handleInputChange}
             className="outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500/40"
           >
             <option value="">Select Category</option>
-            {[
-              { name: "Electronics" },
-              { name: "Clothing" },
-              { name: "Accessories" },
-            ].map((item, index) => (
-              <option key={index} value={item.name}>
-                {item.name}
+            {["Electronics", "Clothing", "Accessories"].map((item, index) => (
+              <option key={index} value={item}>
+                {item}
               </option>
             ))}
           </select>
         </div>
+
         <div className="flex items-center gap-5 flex-wrap">
           <div className="flex-1 flex flex-col gap-1 w-32">
-            <label className="text-base font-medium" htmlFor="product-price">
+            <label className="text-base font-medium" htmlFor="price">
               Product Price
             </label>
             <input
-              id="product-price"
+              id="price"
               type="number"
+              value={formData.price}
+              onChange={handleInputChange}
               placeholder="0"
               className="outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500/40"
               required
             />
           </div>
           <div className="flex-1 flex flex-col gap-1 w-32">
-            <label className="text-base font-medium" htmlFor="offer-price">
+            <label className="text-base font-medium" htmlFor="offerPrice">
               Offer Price
             </label>
             <input
-              id="offer-price"
+              id="offerPrice"
               type="number"
+              value={formData.offerPrice}
+              onChange={handleInputChange}
               placeholder="0"
               className="outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500/40"
               required
             />
           </div>
         </div>
-        <button className="px-8 py-2.5 bg-primary hover:bg-primary-dull transition text-white font-medium rounded">
+
+        <button
+          type="submit"
+          className="px-8 py-2.5 bg-primary hover:bg-primary-dull transition text-white font-medium rounded"
+        >
           ADD
         </button>
       </form>
