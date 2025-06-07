@@ -1,8 +1,7 @@
-// components/InputField.jsx
-const InputField = ({ name, value, onChange, placeholder }) => {
+const InputField = ({type, name, value, onChange, placeholder }) => {
   return (
     <input
-      type="text"
+      type= {type}
       name={name}
       value={value}
       onChange={onChange}

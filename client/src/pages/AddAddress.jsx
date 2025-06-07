@@ -3,7 +3,7 @@ import InputField from "../components/InputField";
 import { assets } from "../assets/assets";
 
 const AddAddress = () => {
-  const [formData, setFormData] = useState({
+  const [address, setAddress] = useState({
     firstName: "",
     lastName: "",
     email: "",
@@ -17,12 +17,12 @@ const AddAddress = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setAddress((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Saved address:", formData);
+    console.log("Saved address:", address);
   };
 
   return (
@@ -35,61 +35,70 @@ const AddAddress = () => {
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <InputField
+              type="text"
               name="firstName"
-              value={formData.firstName}
+              value={address.firstName}
               onChange={handleChange}
               placeholder="First Name"
             />
             <InputField
+              type="text"
               name="lastName"
-              value={formData.lastName}
+              value={address.lastName}
               onChange={handleChange}
               placeholder="Last Name"
             />
           </div>
           <InputField
+            type="email"
             name="email"
-            value={formData.email}
+            value={address.email}
             onChange={handleChange}
             placeholder="Email address"
           />
           <InputField
+            type="text"
             name="street"
-            value={formData.street}
+            value={address.street}
             onChange={handleChange}
             placeholder="Street"
           />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <InputField
+              type="text"
               name="city"
-              value={formData.city}
+              value={address.city}
               onChange={handleChange}
               placeholder="City"
             />
             <InputField
+              type="text"
               name="state"
-              value={formData.state}
+              value={address.state}
               onChange={handleChange}
               placeholder="State"
             />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <InputField
+              type="text"
               name="zip"
-              value={formData.zip}
+              value={address.zip}
               onChange={handleChange}
               placeholder="Zip code"
             />
             <InputField
+              type="text"
               name="country"
-              value={formData.country}
+              value={address.country}
               onChange={handleChange}
               placeholder="Country"
             />
           </div>
           <InputField
+            type="number"
             name="phone"
-            value={formData.phone}
+            value={address.phone}
             onChange={handleChange}
             placeholder="Phone"
           />
